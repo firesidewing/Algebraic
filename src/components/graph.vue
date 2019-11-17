@@ -10,32 +10,41 @@
             :label-size="3"
             :gradient="['#1b5e20', '#c8e6c9']"
             :padding="6"
-            :radius="2"
-            :line-width="1"
+            :radius="10"
+            :line-width="1.5"
+            :smooth="true"
+            :auto-line-width="true"
           ></v-sparkline>
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="3">
-        <v-btn color="green darken-4" v-on:click="AddChartData">Add Data</v-btn>
+    <v-row class="fill-height" align="center">
+      <v-col cols="6">
+        <v-btn small color="green darken-4" v-on:click="AddChartData">Add Data</v-btn>
+      </v-col>
+      <v-col cols="6">
+        <span class="pr-5">Type</span>
+        <v-btn-toggle v-model="ChartType" mandatory>
+          <v-btn small text value="bar">bar</v-btn>
+          <v-btn small text value="trend">trend</v-btn>
+        </v-btn-toggle>
       </v-col>
     </v-row>
-    <v-row v-for="Data in ChartData" v-bind:key="Data.Label">
-      <v-col cols="6">
+    <v-row v-for="(Data, index) in ChartData" v-bind:key="index">
+      <v-col cols="12">
         <v-card>
           <v-row>
-            <v-col cols="12">
-              <v-text-field label="Vertical Data" v-model="Data.Value" single-line solo clearable></v-text-field>
+            <v-col cols="2">
+              <v-btn small class="ma-5" color="red" @click="DeleteChartData(index)">
+                Delete
+                <v-icon right>mdi-delete</v-icon>
+              </v-btn>
             </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-      <v-col cols="6">
-        <v-card>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field label="Horizontal Data" v-model="Data.Label" single-line solo clearable></v-text-field>
+            <v-col cols="5">
+              <v-text-field label="Vertical Data" v-model="Data.Value" clearable></v-text-field>
+            </v-col>
+            <v-col cols="5">
+              <v-text-field label="Horizontal Data" v-model="Data.Label" clearable></v-text-field>
             </v-col>
           </v-row>
         </v-card>
@@ -59,25 +68,66 @@ export default {
   methods: {
     AddChartData: function() {
       this.ChartData.push({
-          Label: "",
-          Value: ""
+        Label: "",
+        Value: ""
       });
+    },
+    DeleteChartData: function(index) {
+      this.ChartData.splice(index, 1);
     }
   },
   computed: {
     x: function() {
-      var Vals = []
-      for (let i = 0; i < this.ChartData.length; i++) {  
-        Vals.push(Number(this.ChartData[i]["Value"]))
+      var Vals = [];
+      var excel;
+      for (let i = 0; i < this.ChartData.length; i++) {
+        var Value = this.ChartData[i]["Value"];
+        if (Value && Value.includes(" ")) {
+          excel = Value.split(" ").map(Number);
+          if (Vals.length == 0) {
+            Vals = excel;
+          } else {
+            Vals.concat(excel);
+          }
+        }
+        else if (Value && Value.includes("\t")) {
+          excel = Value.split("\t").map(Number);
+          if (Vals.length == 0) {
+            Vals = excel;
+          } else {
+            Vals.concat(excel);
+          }
+        } else {
+          Vals.push(Number(Value));
+        }
       }
-      return Vals
+      return Vals;
     },
     y: function() {
-      var Vals = []
-      for (let i = 0; i < this.ChartData.length; i++) {  
-        Vals.push(this.ChartData[i]["Label"])
+      var Vals = [];
+      var excel;
+      for (let i = 0; i < this.ChartData.length; i++) {
+        var Label = this.ChartData[i]["Label"];
+        if (Label && Label.includes(" ")) {
+          excel = Label.split(" ");
+          if (Vals.length == 0) {
+            Vals = excel;
+          } else {
+            Vals.concat(excel);
+          }
+        }
+        else if (Label && Label.includes("\t")) {
+          excel = Label.split("\t");
+          if (Vals.length == 0) {
+            Vals = excel;
+          } else {
+            Vals.concat(excel);
+          }
+        } else {
+          Vals.push(Label);
+        }
       }
-      return Vals
+      return Vals;
     }
   }
 };

@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="Drawer" app clipped>
       <v-list dense>
-        <v-list-item link v-on:click="Comp = 'Percent'">
+        <v-list-item link @click="Comp = 'Percent'">
           <v-list-item-action>
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
@@ -10,12 +10,20 @@
             <v-list-item-title >Percent</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link v-on:click="Comp = 'Graph'">
+        <v-list-item link @click="Comp = 'Graph'">
           <v-list-item-action>
             <v-icon>mdi-percent</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title >Graph</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="Comp = 'Margin'">
+          <v-list-item-action>
+            <v-icon>mdi-currency-usd</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title >Margin</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -32,10 +40,13 @@
 
     <v-content>
       <transition name="slide-fade">
-        <Percent v-if="Comp === 'Percent'"></Percent>
+        <Percent v-show="Comp === 'Percent'"></Percent>
       </transition>
       <transition name="slide-fade">
-        <Graph v-if="Comp === 'Graph'"></Graph>
+        <Graph v-show="Comp === 'Graph'"></Graph>
+      </transition>
+      <transition name="slide-fade">
+        <Margin :ratio="Exchange.rates.CAD" v-show="Comp === 'Margin'"></Margin>
       </transition>
     </v-content>
   </v-app>
@@ -44,6 +55,7 @@
 <script>
 import Graph from "./components/graph";
 import Percent from "./components/percent";
+import Margin from "./components/margin";
 import axios from "axios";
 
 export default {
@@ -53,12 +65,19 @@ export default {
   },
   components: {
     Percent,
-    Graph
+    Graph,
+    Margin
   },
   data: () => ({
     Drawer: false,
     Comp: "Percent",
-    Exchange: ''
+    Exchange: {
+      base: '',
+      date: '',
+      rates: {
+        CAD: ''
+      }
+    }
   }),
   created() {
     this.$vuetify.theme.dark = true;
