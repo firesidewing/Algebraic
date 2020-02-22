@@ -11,16 +11,16 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-title class="display-1">Percentage</v-card-title>
-          <v-card-text class="display-2">{{ result }}</v-card-text>
+          <v-card-title class="headline">Percentage</v-card-title>
+          <v-card-text class="headline">{{ result }}</v-card-text>
         </v-card>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-title class="display-1">Difference</v-card-title>
-          <v-card-text class="display-2">{{ diff }}</v-card-text>
+          <v-card-title class="headline">Difference</v-card-title>
+          <v-card-text class="headline">{{ diff }}</v-card-text>
         </v-card>
       </v-col>
     </v-row>

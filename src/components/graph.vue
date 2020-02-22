@@ -7,11 +7,10 @@
             :value="x"
             :labels="y"
             :type="ChartType"
-            :label-size="3"
+            :label-size="12"
             :gradient="['#1b5e20', '#c8e6c9']"
             :padding="6"
             :radius="10"
-            :line-width="1.5"
             :smooth="true"
             :auto-line-width="true"
           ></v-sparkline>
@@ -33,17 +32,17 @@
     <v-row v-for="(Data, index) in ChartData" v-bind:key="index">
       <v-col cols="12">
         <v-card>
-          <v-row>
-            <v-col cols="2">
+          <v-row justify="center" no-gutters>
+            <v-col cols="12" xs="6" sm="4" md="4" lg="2">
               <v-btn small class="ma-5" color="red" @click="DeleteChartData(index)">
-                Delete
+                DELETE
                 <v-icon right>mdi-delete</v-icon>
               </v-btn>
             </v-col>
-            <v-col cols="5">
+            <v-col cols="8" sm="8" md="8" lg="8">
               <v-text-field label="Vertical Data" v-model="Data.Value" clearable></v-text-field>
             </v-col>
-            <v-col cols="5">
+            <v-col cols="8" sm="8" md="8" lg="8">
               <v-text-field label="Horizontal Data" v-model="Data.Label" clearable></v-text-field>
             </v-col>
           </v-row>
@@ -89,8 +88,7 @@ export default {
           } else {
             Vals.concat(excel);
           }
-        }
-        else if (Value && Value.includes("\t")) {
+        } else if (Value && Value.includes("\t")) {
           excel = Value.split("\t").map(Number);
           if (Vals.length == 0) {
             Vals = excel;
@@ -115,8 +113,7 @@ export default {
           } else {
             Vals.concat(excel);
           }
-        }
-        else if (Label && Label.includes("\t")) {
+        } else if (Label && Label.includes("\t")) {
           excel = Label.split("\t");
           if (Vals.length == 0) {
             Vals = excel;

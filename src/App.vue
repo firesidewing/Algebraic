@@ -1,13 +1,13 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="Drawer" app clipped>
+    <v-navigation-drawer v-model="Drawer" app clipped temporary>
       <v-list dense>
         <v-list-item link @click="Comp = 'Percent'">
           <v-list-item-action>
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title >Percent</v-list-item-title>
+            <v-list-item-title>Percent</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link @click="Comp = 'Graph'">
@@ -15,7 +15,7 @@
             <v-icon>mdi-percent</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title >Graph</v-list-item-title>
+            <v-list-item-title>Graph</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link @click="Comp = 'Margin'">
@@ -23,7 +23,7 @@
             <v-icon>mdi-currency-usd</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title >Margin</v-list-item-title>
+            <v-list-item-title>Margin</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -32,10 +32,9 @@
     <v-app-bar app clipped-left>
       <v-app-bar-nav-icon @click.stop="Drawer = !Drawer" />
       <v-toolbar-title>Algebraic</v-toolbar-title>
-      <v-spacer></v-spacer>
-      $USD 1.00000
+      <v-spacer></v-spacer>$USD 1
       <v-icon>mdi-arrow-left-right</v-icon>
-      $CAD {{ Exchange.rates.CAD }}
+      $CAD {{ Exchange.rates.CAD.toFixed(4) }}
     </v-app-bar>
 
     <v-content>
@@ -72,10 +71,10 @@ export default {
     Drawer: false,
     Comp: "Percent",
     Exchange: {
-      base: '',
-      date: '',
+      base: "",
+      date: "",
       rates: {
-        CAD: ''
+        CAD: ""
       }
     }
   }),
@@ -90,7 +89,7 @@ export default {
         .get("https://api.exchangeratesapi.io/latest?symbols=CAD&base=USD")
         .then(function(response) {
           self.Exchange = response.data;
-        })
+        });
     }
   }
 };
